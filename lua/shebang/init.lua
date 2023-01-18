@@ -15,7 +15,7 @@ local function insert_shebang()
         mak = "make",
         php = "php",
         pl = "perl",
-        py = "python3",
+        py = "python",
         r = "Rscript",
         rb = "ruby",
         scala = "scala",
@@ -42,7 +42,13 @@ local function insert_shebang()
     if shebang ~= nil then
         vim.cmd [[ autocmd BufWritePost *.* :autocmd VimLeave * :!chmod u+x % ]]
         vim.api.nvim_put({"#!" .. shebang}, "", true, true)
-        vim.fn.append(1, '')
+    end
+    if shells[ext] == "python" then
+        vim.fn.append(1, "# -*- coding=utf-8 -*-")
+        vim.fn.append(2, "")
+        vim.fn.cursor(3, 0)
+    else
+        vim.fn.append(1, "")
         vim.fn.cursor(2, 0)
     end
 end
